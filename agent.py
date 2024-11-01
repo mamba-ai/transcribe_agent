@@ -310,19 +310,19 @@ def transcribe(inputs: str):
         padding_duration=0.5
     )
 
-    folder_name = generate_random_folder()
-    output_dir = f"temp/{folder_name}"
-    output_files = splitter.split_audio(inputs, output_dir=output_dir)
+    tmp_folder = generate_random_folder()
+    output_files = splitter.split_audio(inputs, output_dir=tmp_folder)
 
     outputs = []
-    for output_file in output_files:
+    for i, output_file in enumerate(output_files):
         with open(output_file, "rb") as f:
             inputs = f.read()
             inputs = ffmpeg_read(inputs, pipe.feature_extractor.sampling_rate)
             inputs = {"array": inputs, "sampling_rate": pipe.feature_extractor.sampling_rate}
             outputs.append(get_prediction(inputs))
+            print(f"Segment {i}: {outputs[-1]}")
     
-    shutil.rmtree(output_dir)
+    shutil.rmtree(tmp_folder)
     return "".join(outputs)
 
 
