@@ -400,11 +400,18 @@ def generate_random_folder():
 def transcribe_v2(inputs: str):
     if inputs is None:
         raise gr.Error("音声ファイルが送信されていません！リクエストを送信する前に、音声ファイルをアップロードまたは録音してください。")
+    # splitter = AudioSplitter(
+    #     min_segment_length=2.0,
+    #     max_segment_length=10.0,
+    #     vad_threshold=0.3,
+    #     min_silence_duration=0.5,
+    #     padding_duration=0.01
+    # )
     splitter = AudioSplitter(
-        min_segment_length=2.0,
-        max_segment_length=10.0,
-        vad_threshold=0.3,
-        min_silence_duration=0.5,
+        min_segment_length=5.0,
+        max_segment_length=15.0,
+        vad_threshold=0.4,
+        min_silence_duration=0.8,
         padding_duration=0.01
     )
 
