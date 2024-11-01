@@ -31,6 +31,8 @@ else:
     torch_dtype = torch.float32
     device = "cpu"
 
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+
 # define the pipeline
 pipe = pipeline(
     model=MODEL_NAME,
@@ -321,6 +323,7 @@ def transcribe(inputs: str):
             inputs = {"array": inputs, "sampling_rate": pipe.feature_extractor.sampling_rate}
             outputs.append(get_prediction(inputs))
             print(f"Segment {i}: {outputs[-1]}")
+            torch.cuda.empty_cache()
     
     shutil.rmtree(tmp_folder)
     return "".join(outputs)
