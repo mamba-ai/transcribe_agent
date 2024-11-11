@@ -19,8 +19,8 @@ from transformers import WhisperProcessor, WhisperForConditionalGeneration, Whis
 import librosa
 
 # configuration
-# MODEL_NAME = "federerjiang/mambavoice-ja-v1"
-MODEL_NAME = "openai/whisper-large-v3"
+MODEL_NAME = "federerjiang/mambavoice-ja-v1"
+# MODEL_NAME = "openai/whisper-large-v3"
 # MODEL_NAME = "openai/whisper-large-v3-turbo"
 BATCH_SIZE = 4
 CHUNK_LENGTH_S = 15
