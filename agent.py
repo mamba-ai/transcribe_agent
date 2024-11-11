@@ -430,7 +430,7 @@ def transcribe_v2(inputs: str):
         waveform, _ = librosa.load(output_file, sr=16000)
         waveform = change_volume(waveform, target_rms=0.1)
         silence_length, silence_threshold = dynamic_silence_threshold(waveform, 16000)
-        duration = min(max(0.01, (2600 - silence_length) / 16000), 0.1)
+        duration = min(max(0.02, (2600 - silence_length) / 16000), 0.1)
         print(f"Silence Length: {silence_length}, Duration: {duration}")
         waveform = add_silence(waveform, 16000, duration=duration)
         result = inference(model, waveform)
