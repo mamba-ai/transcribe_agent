@@ -19,8 +19,8 @@ from transformers import WhisperProcessor, WhisperForConditionalGeneration, Whis
 import librosa
 
 # configuration
-MODEL_NAME = "federerjiang/mambavoice-ja-v1"
-# MODEL_NAME = "openai/whisper-large-v3"
+# MODEL_NAME = "federerjiang/mambavoice-ja-v1"
+MODEL_NAME = "openai/whisper-large-v3"
 # MODEL_NAME = "openai/whisper-large-v3-turbo"
 BATCH_SIZE = 4
 CHUNK_LENGTH_S = 15
@@ -258,7 +258,14 @@ class AudioSplitter:
             start_ms = int(segment.start * 1000)
             end_ms = int(segment.end * 1000)
             
-            audio_segment = audio[start_ms:end_ms]
+            if i == len(segments) - 2:
+                audio_segment = audio[start_ms: -1]
+            elif i == len(segments) - 1:
+                break 
+            else:
+                audio_segment = audio[start_ms:end_ms]
+
+            # audio_segment = audio[start_ms:end_ms]
 
             # 添加静默片段
             padded_segment = self.add_silence_padding(
@@ -409,10 +416,10 @@ def transcribe_v2(inputs: str):
     # )
     splitter = AudioSplitter(
         min_segment_length=5.0,
-        max_segment_length=15.0,
-        vad_threshold=0.4,
-        min_silence_duration=0.8,
-        padding_duration=0.01
+        max_segment_length=10.0,
+        vad_threshold=0.3,
+        min_silence_duration=0.5,
+        padding_duration=0.4
     )
 
     tmp_folder = generate_random_folder()
